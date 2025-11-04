@@ -6,7 +6,7 @@ class Product:
     def __init__(self, name: str, price: float):
         self.name = name
         self.price = price
-        
+
     def __eq__(self, other):
         return isinstance(other, Product) and self.name == other.name and self.price == other.price
 
@@ -27,7 +27,25 @@ class TooManyProductsFoundError:
 #   (3) możliwość odwołania się do metody `get_entries(self, n_letters)` zwracającą listę produktów spełniających kryterium wyszukiwania
  
 class ListServer:
-    pass
+    n_max_returned_entries = 3
+    def __init__(self, products):
+        self.products = list(products)
+    
+    def get_entries(self, n_letters):
+        filtered = [p for p in self.products if self._matches(p, n_letters)]
+        if len(filtered) > self.n_max_returned_entries:
+            raise TooManyProductsFoundError
+        return sorted(filtered, key=lambda x: x.price)
+    
+    def _matches(self, product, n_letters):
+        name = product.name
+        if not name[:n_letters].isalpha():
+            return False
+        if not name[n_letters:].isdigit():
+            return False
+        return len(name) - n_letters == len(str(int(name[n_letters:])))
+
+    #pass
  
  
 class MapServer:
