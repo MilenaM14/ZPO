@@ -3,12 +3,17 @@ from typing import Optional
  
 class Product:
     # FIXME: klasa powinna posiadać metodę inicjalizacyjną przyjmującą argumenty wyrażające nazwę produktu (typu str) i jego cenę (typu float) -- w takiej kolejności -- i ustawiającą atrybuty `name` (typu str) oraz `price` (typu float)
- 
+    def __init__(self, name: str, price: float):
+        self.name = name
+        self.price = price
+        
     def __eq__(self, other):
-        return None  # FIXME: zwróć odpowiednią wartość
- 
+        return isinstance(other, Product) and self.name == other.name and self.price == other.price
+
     def __hash__(self):
         return hash((self.name, self.price))
+    
+
  
  
 class TooManyProductsFoundError:
